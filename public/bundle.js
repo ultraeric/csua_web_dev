@@ -9740,6 +9740,8 @@ module.exports = getHostComponentFromComposite;
 "use strict";
 
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(82);
@@ -9758,16 +9760,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var App = function (_React$Component) {
-  _inherits(App, _React$Component);
+var Header = function (_React$Component) {
+  _inherits(Header, _React$Component);
 
-  function App() {
-    _classCallCheck(this, App);
+  function Header() {
+    _classCallCheck(this, Header);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this));
   }
 
-  _createClass(App, [{
+  _createClass(Header, [{
     key: 'render',
     value: function render() {
       return React.createElement(
@@ -9776,7 +9778,157 @@ var App = function (_React$Component) {
         React.createElement(
           'h1',
           null,
-          'Hello world!'
+          'This is the header'
+        )
+      );
+    }
+  }]);
+
+  return Header;
+}(React.Component);
+
+/*
+  Props:
+  - large <boolean>
+*/
+
+
+var CustomizableHeader = function (_React$Component2) {
+  _inherits(CustomizableHeader, _React$Component2);
+
+  function CustomizableHeader() {
+    _classCallCheck(this, CustomizableHeader);
+
+    var _this2 = _possibleConstructorReturn(this, (CustomizableHeader.__proto__ || Object.getPrototypeOf(CustomizableHeader)).call(this));
+
+    _this2.render = _this2.render.bind(_this2);
+    return _this2;
+  }
+
+  _createClass(CustomizableHeader, [{
+    key: 'render',
+    value: function render() {
+      this.props.large;
+      return React.createElement(
+        'div',
+        null,
+        this.props.large ? React.createElement(Header, null) : React.createElement(
+          'h2',
+          null,
+          'This is not large'
+        )
+      );
+    }
+  }]);
+
+  return CustomizableHeader;
+}(React.Component);
+
+/*
+  Props:
+  - onClick <function>
+  - style <object>
+*/
+
+
+var CustomizableButton = function (_React$Component3) {
+  _inherits(CustomizableButton, _React$Component3);
+
+  function CustomizableButton() {
+    _classCallCheck(this, CustomizableButton);
+
+    var _this3 = _possibleConstructorReturn(this, (CustomizableButton.__proto__ || Object.getPrototypeOf(CustomizableButton)).call(this));
+
+    _this3.render = _this3.render.bind(_this3);
+    return _this3;
+  }
+
+  _createClass(CustomizableButton, [{
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'button',
+        { style: this.props.style, onClick: this.props.onClick },
+        this.props.children
+      );
+    }
+  }]);
+
+  return CustomizableButton;
+}(React.Component);
+
+function HigherOrderButton(WrappedComponent) {
+  /*
+    Props:
+    - color <string>
+  */
+  return function (_React$Component4) {
+    _inherits(Wrapper, _React$Component4);
+
+    function Wrapper() {
+      _classCallCheck(this, Wrapper);
+
+      var _this4 = _possibleConstructorReturn(this, (Wrapper.__proto__ || Object.getPrototypeOf(Wrapper)).call(this));
+
+      _this4.render = _this4.render.bind(_this4);
+      return _this4;
+    }
+
+    _createClass(Wrapper, [{
+      key: 'render',
+      value: function render() {
+        return React.createElement(WrappedComponent, _extends({ style: { backgroundColor: this.props.color } }, this.props));
+      }
+    }]);
+
+    return Wrapper;
+  }(React.Component);
+}
+
+var ColoredButton = HigherOrderButton(CustomizableButton);
+
+var App = function (_React$Component5) {
+  _inherits(App, _React$Component5);
+
+  function App() {
+    _classCallCheck(this, App);
+
+    var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+    _this5.render = _this5.render.bind(_this5);
+    _this5.state = {
+      large: false
+    };
+    return _this5;
+  }
+
+  _createClass(App, [{
+    key: 'render',
+    value: function render() {
+      var _this6 = this;
+
+      return React.createElement(
+        'div',
+        null,
+        React.createElement(CustomizableHeader, { large: this.state.large }),
+        React.createElement(
+          'div',
+          null,
+          'This is no longer the Header'
+        ),
+        React.createElement(
+          'button',
+          { onClick: function onClick() {
+              return _this6.setState({ large: !_this6.state.large });
+            } },
+          ' Click me to change header type!'
+        ),
+        React.createElement(
+          ColoredButton,
+          { color: 'blue', onClick: function onClick() {
+              return _this6.setState({ large: !_this6.state.large });
+            } },
+          'Test'
         )
       );
     }
